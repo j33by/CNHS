@@ -1,0 +1,30 @@
+# Render Blueprint: one web service = the CNHS website + publications + the API + the realtime socket.
+# Render dashboard > New > Blueprint > pick this GitHub repo.
+services:
+  - type: web
+    name: cnhs-portal
+    runtime: node
+    rootDir: backend
+    plan: starter            # "free" works for testing but sleeps after ~15 min idle, which stops live push. Use starter or higher for real use.
+    region: singapore        # closest to Bohol
+    buildCommand: npm ci
+    startCommand: npm run migrate && node src/server.js
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL    # Supabase > Project Settings > Database > Connection string (Session pooler)
+        sync: false
+      - key: SUPABASE_URL    # https://xxxx.supabase.co
+        sync: false
+      - key: SUPABASE_SERVICE_KEY   # Supabase > Project Settings > API > service_role key (keep secret)
+        sync: false
+      - key: SITE_URL        # your public address, e.g. https://cnhs-portal.onrender.com (or your own domain)
+        sync: false
+      - key: APP_DOWNLOAD_URL   # where the website's "Get the apps" buttons point (your GitHub Releases page)
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STORAGE_BUCKET
+        value: pub-media

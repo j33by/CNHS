@@ -1,0 +1,13 @@
+name: cnhs_student
+description: CNHS student app (Android).
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  cnhs_core:
+    path: ../../packages/cnhs_core
+flutter:
+  uses-material-design: true
